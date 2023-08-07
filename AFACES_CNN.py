@@ -20,10 +20,12 @@ train_count = len(train_set)
 batch_size = 100
 train_loader = DataLoader(train_set, batch_size=batch_size, shuffle=True)
 
+label_name = {0: 'cat', 1: 'dog', 2: 'wild'}
 # print(train_count)
 # transform = transforms.ToPILImage()
 # print(train_set[0][0].shape)
 samples, labels = next(iter(train_loader))
 # plt.imshow(transform(samples[0]))
 plt.imshow(samples[0].permute(1, 2, 0))
+plt.title(label_name[labels[0].item()])
 plt.show()

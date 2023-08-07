@@ -14,7 +14,7 @@ def unpickle(file):
 class CIFAR100_dataset(Dataset):
     def __init__(self, img_dir, transform=None, target_transform=None):
         data_train_dict = unpickle(img_dir)  # 'CIFAR-100/train'
-        self.img_labels = np.array(data_train_dict[b'coarse_labels'])
+        self.img_labels = np.array(data_train_dict[b'fine_labels'])
         self.img_samples = data_train_dict[b'data'].reshape(-1, 3, 32, 32)
         self.transform = transform
         self.target_transform = target_transform
@@ -36,16 +36,27 @@ class ConvNet(nn.Module):
     def __init__(self):
         super().__init__()
         self.model = nn.Sequential(
-            nn.Conv2d(3, 32, kernel_size=5, stride=1, padding=2),
+            nn.Conv2d(3, 64, kernel_size=3, padding=2, stride=1),
+            nn.Dropout(p=0.1),
+            # nn.BatchNorm2d(64),
             nn.ReLU(),
-            nn.MaxPool2d(kernel_size=2, stride=2),
-            nn.Conv2d(32, 64, kernel_size=5, stride=1, padding=2),
+            nn.MaxPool2d(2, 2),
+            nn.Conv2d(64, 128, kernel_size=3, padding=2, stride=1),
+            nn.Dropout(p=0.1),
+            # nn.BatchNorm2d(128),
             nn.ReLU(),
-            nn.MaxPool2d(kernel_size=2, stride=2),
+            nn.MaxPool2d(2, 2),
+            nn.Conv2d(128, 256, kernel_size=3, padding=2, stride=1),
+            nn.Dropout(p=0.1),
+            # nn.BatchNorm2d(256),
+            nn.ReLU(),
+            nn.MaxPool2d(2, 2),
             nn.Flatten(),
-            nn.Dropout(),
-            nn.Linear(8 * 8 * 64, 1000),
-            nn.Linear(1000, 20)
+            nn.Linear(256*5*5, 1024),
+            nn.ReLU(),
+            nn.Linear(1024, 512),
+            nn.ReLU(),
+            nn.Linear(512, 100)
         )
 
     def forward(self, x):
