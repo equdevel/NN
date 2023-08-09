@@ -23,7 +23,7 @@ test_count = len(test_set)
 batch_size = 9
 test_loader = DataLoader(test_set, batch_size=batch_size, shuffle=True)
 
-conv_net = torch.load('CIFAR100_Epoch_48_Loss_0.016.pt', map_location=device)
+conv_net = torch.load('CIFAR100_100-class__Epoch_0_Loss_0.001.pt', map_location=device)
 
 samples, labels = next(iter(test_loader))
 output = conv_net(samples.to(device))
@@ -55,5 +55,5 @@ with torch.no_grad():
         output = conv_net(samples)
         _, predicted = torch.max(output.data, 1)
         total += labels.size(0)
-        correct += sum(predicted == labels).item()
-    print(f'Test accuracy of the model on {test_count} test images: {(correct / total) * 100:.2f} %')
+        correct += torch.sum(predicted == labels).item()
+    print(f'Test accuracy of the model on {test_count} test images: {(correct / total) * 100:.3f} %')

@@ -19,9 +19,10 @@ batch_size = 100
 train_loader = DataLoader(train_set, batch_size=batch_size, shuffle=True)
 
 conv_net = ConvNet().to(device)
+# conv_net = torch.load('CIFAR100_100-class__Epoch_0_Loss_0.001.pt', map_location=device)  # conv_net.train()
 
-lr = 0.001
-num_epochs = 50
+lr = 0.0001
+num_epochs = 30
 loss_function = nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(conv_net.parameters(), lr=lr)
 
@@ -40,7 +41,8 @@ for epoch in range(num_epochs):
         loss = loss_function(output, labels)
         loss.backward()
         optimizer.step()
-    print(f"Epoch = {epoch}      Loss = {loss:.3f}")
-    if loss <= 0.05:
-        torch.save(conv_net, f'CIFAR100_100-class__Epoch_{epoch}_Loss_{loss:.3f}.pt')
+    print(f"Epoch = {epoch}      Loss = {loss:.4f}")
+    if loss <= 0.001:
+        torch.save(conv_net, f'CIFAR100_100-class__Epoch_{epoch}_Loss_{loss:.4f}.pt')
         print('Model saved.')
+torch.save(conv_net, f'CIFAR100_100-class__last_epoch_Loss_{loss:.4f}.pt')
