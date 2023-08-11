@@ -1,7 +1,7 @@
 import torch
 import matplotlib.pyplot as plt
 import torch_directml
-from models_mnist import Generator
+from MNIST_GAN_model import Generator
 
 
 device = torch_directml.device()

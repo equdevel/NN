@@ -42,7 +42,7 @@ with torch.no_grad():
         pred = predicted[0].item()
         sample = samples[0].permute(1, 2, 0)
         plt.imshow(sample.cpu())
-        plt.title(label_name[pred] + f' (from batch #{n})')
+        plt.title(label_name[pred])
         plt.xticks([])
         plt.yticks([])
         plt.show()

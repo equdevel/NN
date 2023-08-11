@@ -4,7 +4,7 @@ import torchvision
 import torchvision.transforms as transforms
 import matplotlib.pyplot as plt
 import torch_directml
-from models_mnist import Discriminator, Generator
+from MNIST_GAN_model import Discriminator, Generator
 
 
 device = torch_directml.device()

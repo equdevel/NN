@@ -2,7 +2,7 @@ import torch
 from torch import nn
 import math
 import matplotlib.pyplot as plt
-from models_sinus import Discriminator, Generator
+from sinus_GAN_model import Discriminator, Generator
 import torch_directml
 
 
