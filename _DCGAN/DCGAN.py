@@ -46,8 +46,8 @@ discriminator = Discriminator().to(device)
 # summary(discriminator, (3,64,64))
 
 # Continue train
-# generator = torch.load('training_weights/generator_epoch_9_Gloss_2.955.pth', map_location=device)
-# discriminator = torch.load('training_weights/discriminator_epoch_9_Dloss_1.210.pth', map_location=device)
+# generator = torch.load('training_weights/generator_epoch_10_Gloss_3.379.pth', map_location=device)
+# discriminator = torch.load('training_weights/discriminator_epoch_10_Dloss_1.046.pth', map_location=device)
 
 generator_loss = nn.BCELoss()
 discriminator_loss = nn.BCELoss()
@@ -68,9 +68,7 @@ for epoch in range(1, num_epochs + 1):
     for index, (real_images, _) in enumerate(train_loader):
         D_optimizer.zero_grad()
         real_images = real_images.to(device)
-      
-        # real_target = Variable(torch.ones(real_images.size(0)).to(device))
-        # fake_target = Variable(torch.zeros(real_images.size(0)).to(device))
+
         real_target = torch.ones(real_images.size(0)).to(device)
         fake_target = torch.zeros(real_images.size(0)).to(device)
 

@@ -59,32 +59,27 @@ class Discriminator(nn.Module):
         self.main = nn.Sequential(
             # Block 0: (3) x 128 x 128
             nn.Conv2d(3, conv_dim // 2, 4, 2, 1, bias=False),
-            nn.ReLU(True),
-            # nn.LeakyReLU(0.2, inplace=True),
+            nn.LeakyReLU(0.2, inplace=True),
 
             # Block 1: (conv_dim * 0.5) x 64 x 64
             nn.Conv2d(conv_dim // 2, conv_dim * 1, 4, 2, 1, bias=False),
             nn.BatchNorm2d(conv_dim * 1),
-            nn.ReLU(True),
-            # nn.LeakyReLU(0.2, inplace=True),
+            nn.LeakyReLU(0.2, inplace=True),
 
             # Block 2: (conv_dim * 1) x 32 x 32
             nn.Conv2d(conv_dim, conv_dim * 2, 4, 2, 1, bias=False),
             nn.BatchNorm2d(conv_dim * 2),
-            nn.ReLU(True),
-            # nn.LeakyReLU(0.2, inplace=True),
+            nn.LeakyReLU(0.2, inplace=True),
 
             # Block 3: (conv_dim * 2) x 16 x 16
             nn.Conv2d(conv_dim * 2, conv_dim * 4, 4, 2, 1, bias=False),
             nn.BatchNorm2d(conv_dim * 4),
-            nn.ReLU(True),
-            # nn.LeakyReLU(0.2, inplace=True),
+            nn.LeakyReLU(0.2, inplace=True),
 
             # Block 4: (conv_dim * 4) x 8 x 8
             nn.Conv2d(conv_dim * 4, conv_dim * 8, 4, 2, 1, bias=False),
             nn.BatchNorm2d(conv_dim * 8),
-            nn.ReLU(True),
-            # nn.LeakyReLU(0.2, inplace=True),
+            nn.LeakyReLU(0.2, inplace=True),
 
             # Block 5: (conv_dim * 8) x 4 x 4
             nn.Conv2d(conv_dim * 8, 1, 4, 1, 0, bias=False),
