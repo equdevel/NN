@@ -23,7 +23,7 @@ device = torch_directml.device()
 
 batch_size = 48
 learning_rate = 0.001
-num_epochs = 50
+num_epochs = 5
 
 train_transform = transforms.Compose([transforms.Resize((128, 128)),
                                       transforms.ToTensor()])
@@ -46,8 +46,8 @@ discriminator = Discriminator().to(device)
 # summary(discriminator, (3, 128, 128))
 
 # Continue train
-generator = torch.load('training_weights/generator__epoch_17__Gloss_3.157.pth', map_location=device)
-discriminator = torch.load('training_weights/discriminator__epoch_17__Dloss_1.107.pth', map_location=device)
+generator = torch.load('training_weights/generator__epoch_10__Gloss_3.832.pth', map_location=device)
+discriminator = torch.load('training_weights/discriminator__epoch_10__Dloss_0.916.pth', map_location=device)
 
 generator_loss = nn.BCELoss()
 discriminator_loss = nn.BCELoss()
@@ -89,7 +89,7 @@ for epoch in range(1, num_epochs + 1):
         D_fake_loss.backward()
       
         D_total_loss = D_real_loss + D_fake_loss
-        D_loss_list.append(D_total_loss)
+        D_loss_list.append(D_total_loss.cpu().detach())
       
         # D_total_loss.backward()
         D_optimizer.step()
@@ -97,7 +97,7 @@ for epoch in range(1, num_epochs + 1):
         # Train generator with real labels
         G_optimizer.zero_grad()
         G_loss = generator_loss(discriminator(generated_image), real_target)
-        G_loss_list.append(G_loss)
+        G_loss_list.append(G_loss.cpu().detach())
 
         G_loss.backward()
         G_optimizer.step()
@@ -108,6 +108,15 @@ for epoch in range(1, num_epochs + 1):
     G_loss_plot.append(G_loss)
     print('Epoch [%d/%d]: D_loss = %.3f, G_loss = %.3f' % (epoch, num_epochs, D_loss, G_loss))
 
+    # Graphic Loss(batch) - average loss per one epoch
+    plt.plot(range(1, len(G_loss_list) + 1), G_loss_list)
+    plt.plot(range(1, len(D_loss_list) + 1), D_loss_list)
+    plt.title('Average loss per one epoch')
+    plt.xlabel('Batch')
+    plt.ylabel('Loss')
+    plt.legend(['G_loss', 'D_loss'])
+    plt.show()
+
     # if G_loss <= 2.5:
     if epoch % 10 == 0:
         torch.save(generator, f'training_weights/generator__epoch_{epoch}__Gloss_{G_loss:.3f}.pth')
@@ -116,7 +125,7 @@ for epoch in range(1, num_epochs + 1):
 
     # im = generated_image[0].cpu().detach().permute(1, 2, 0)
     # im = torch.sigmoid(im)
-    # im = np.array(im)
+    # im = np.array(im) # im = im.numpy()
     # im = (im * 255).astype(np.uint8)
     # im = (im * 255).to(torch.uint8)  # is equivalent to .byte()
     # plt.imshow(im)
@@ -136,3 +145,12 @@ for epoch in range(1, num_epochs + 1):
     im = make_grid(im, nrow=2, normalize=True, value_range=(0, 1)).permute(1, 2, 0)
     plt.imshow(im)
     plt.show()
+
+# Graphic Loss(epoch) - average loss per all epochs
+plt.plot(range(1, num_epochs + 1), G_loss_plot)
+plt.plot(range(1, num_epochs + 1), D_loss_plot)
+plt.title('Average loss per all epochs')
+plt.xlabel('Epoch')
+plt.ylabel('Loss')
+plt.legend(['G_loss', 'D_loss'])
+plt.show()
