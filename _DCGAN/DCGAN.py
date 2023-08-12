@@ -38,16 +38,16 @@ train_loader = torch.utils.data.DataLoader(dataset=train_dataset, batch_size=bat
 generator = Generator().to(device)
 # generator.apply(weights_init)
 # print(generator)
-# summary(generator, (100, 1, 1))
+# summary(generator, (128, 1, 1))
 
 discriminator = Discriminator().to(device)
 # discriminator.apply(weights_init)
 # print(discriminator)
-# summary(discriminator, (3,64,64))
+# summary(discriminator, (3, 128, 128))
 
 # Continue train
-# generator = torch.load('training_weights/generator_epoch_10_Gloss_3.379.pth', map_location=device)
-# discriminator = torch.load('training_weights/discriminator_epoch_10_Dloss_1.046.pth', map_location=device)
+generator = torch.load('training_weights/generator__epoch_17__Gloss_3.157.pth', map_location=device)
+discriminator = torch.load('training_weights/discriminator__epoch_17__Dloss_1.107.pth', map_location=device)
 
 generator_loss = nn.BCELoss()
 discriminator_loss = nn.BCELoss()
@@ -109,9 +109,10 @@ for epoch in range(1, num_epochs + 1):
     print('Epoch [%d/%d]: D_loss = %.3f, G_loss = %.3f' % (epoch, num_epochs, D_loss, G_loss))
 
     # if G_loss <= 2.5:
-    torch.save(generator, f'training_weights/generator__epoch_{epoch}__Gloss_{G_loss:.3f}.pth')
-    torch.save(discriminator, f'training_weights/discriminator__epoch_{epoch}__Dloss_{D_loss:.3f}.pth')
-    print('Model saved.')
+    if epoch % 10 == 0:
+        torch.save(generator, f'training_weights/generator__epoch_{epoch}__Gloss_{G_loss:.3f}.pth')
+        torch.save(discriminator, f'training_weights/discriminator__epoch_{epoch}__Dloss_{D_loss:.3f}.pth')
+        print('Model saved.')
 
     # im = generated_image[0].cpu().detach().permute(1, 2, 0)
     # im = torch.sigmoid(im)
