@@ -21,11 +21,12 @@ from DCGAN_model import Generator, Discriminator, latent_dim, weights_init
 device = torch_directml.device()
 # device = torch.device('cpu')
 
+image_size = (128, 128)
 batch_size = 48
 learning_rate = 0.001
-num_epochs = 5
+num_epochs = 50
 
-train_transform = transforms.Compose([transforms.Resize((128, 128)),
+train_transform = transforms.Compose([transforms.Resize(image_size),
                                       transforms.ToTensor()])
                                       # transforms.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5])])
 train_dataset = datasets.ImageFolder(root='afhq/train', transform=train_transform)

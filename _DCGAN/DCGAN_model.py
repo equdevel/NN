@@ -5,8 +5,8 @@ import matplotlib.pyplot as plt
 from torchvision.utils import make_grid
 
 
-image_shape = (3, 128, 128)
-image_dim = int(np.prod(image_shape))
+# image_shape = (3, 128, 128)
+# image_dim = int(np.prod(image_shape))
 latent_dim = 128  # noise vector size
 conv_dim = 128
 
