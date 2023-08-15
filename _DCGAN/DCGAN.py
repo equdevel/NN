@@ -37,7 +37,7 @@ train_loader = torch.utils.data.DataLoader(dataset=train_dataset, batch_size=bat
 # plt.show()
 
 generator = Generator().to(device)
-# generator.apply(weights_init)
+generator.apply(weights_init)
 # print(generator)
 # summary(generator, (128, 1, 1))
 
@@ -47,8 +47,8 @@ discriminator = Discriminator().to(device)
 # summary(discriminator, (3, 128, 128))
 
 # Continue train
-generator = torch.load('training_weights/generator__epoch_10__Gloss_3.832.pth', map_location=device)
-discriminator = torch.load('training_weights/discriminator__epoch_10__Dloss_0.916.pth', map_location=device)
+# generator = torch.load('training_weights/generator__epoch_10__Gloss_3.832.pth', map_location=device)
+# discriminator = torch.load('training_weights/discriminator__epoch_10__Dloss_0.916.pth', map_location=device)
 
 generator_loss = nn.BCELoss()
 discriminator_loss = nn.BCELoss()
